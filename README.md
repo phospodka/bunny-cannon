@@ -24,6 +24,9 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
+  -d FILE, --headers FILE
+                        Filename that holds headers to add to the message.
+                        Defaults to `headers.json`
   -e EXCHANGE, --exchange EXCHANGE
                         Exchange to send messages to
   -f FILE, --formatter FILE
@@ -37,8 +40,13 @@ optional arguments:
   -o HOST, --host HOST  Rabbitmq hostname to connect to. Defaults to
                         `localhost`
   -p PORT, --port PORT  Rabbitmq port to connect to. Defaults to `5672`
+  -P PASSWORD, --password PASSWORD
+                        Rabbitmq password to connect with. Defaults to `guest`
   -r KEY, --routing_key KEY
                         Routing key to mark message with
+  -u USERNAME, --username USERNAME
+                        Rabbitmq usernamee to connect with. Defaults to
+                        `guest`
 ```
 
 ## License
@@ -53,3 +61,4 @@ Items to do
 * make installable
 * * better readme for message and formatter after that
 * replace deprecated imports
+* add properties file for configuration instead of all arguments
