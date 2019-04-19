@@ -91,7 +91,7 @@ if __name__ == '__main__':
                         help='Exchange to send messages to')
     parser.add_argument('-f', '--formatter', metavar='FILE', type=str, default='formatter.py',
                         help='Python script that contains a `def format(message)` method that '
-                             'defines how to format, replace, etc defails of the message input '
+                             'defines how to format, replace, etc details of the message input '
                              'file. Defaults to `formatter.py` in the working directory')
     parser.add_argument('-H', '--host', metavar='HOST', type=str, default='localhost',
                         help='Rabbitmq hostname to connect to. Defaults to `localhost`')
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--routing_key', metavar='KEY', type=str,
                         help='Routing key to mark message with')
     parser.add_argument('-u', '--username', metavar='USERNAME', type=str, default='guest',
-                        help='Rabbitmq usernamee to connect with. Defaults to `guest`')
+                        help='Rabbitmq username to connect with. Defaults to `guest`')
     parser.add_argument('-t', '--threads', metavar='NUM', type=int, default=1,
                         help='Number of threads to launch messages with')
 

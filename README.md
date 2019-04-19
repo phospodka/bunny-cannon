@@ -35,7 +35,7 @@ optional arguments:
   -f FILE, --formatter FILE
                         Python script that contains a `def format(message)`
                         method that defines how to format, replace, etc
-                        defails of the message input file. Defaults to
+                        details of the message input file. Defaults to
                         `formatter.py` in the working directory
   -H HOST, --host HOST  Rabbitmq hostname to connect to. Defaults to
                         `localhost`
@@ -48,7 +48,7 @@ optional arguments:
   -r KEY, --routing_key KEY
                         Routing key to mark message with
   -u USERNAME, --username USERNAME
-                        Rabbitmq usernamee to connect with. Defaults to
+                        Rabbitmq username to connect with. Defaults to
                         `guest`
   -t NUM, --threads NUM
                         Number of threads to launch messages with
