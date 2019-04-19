@@ -15,7 +15,8 @@ def launch(args):
     """
     credentials = pika.PlainCredentials(args.username, args.password)
     props = pika.BasicProperties(content_type='application/json',
-                                 headers=load_headers(args.headers))
+                                 headers=load_headers(args.headers),
+                                 delivery_mode=2)
     connection = pika.BlockingConnection(pika.ConnectionParameters(
             host=args.host,
             port=args.port,
@@ -72,15 +73,15 @@ if __name__ == '__main__':
                         help='Python script that contains a `def format(message)` method that '
                              'defines how to format, replace, etc defails of the message input '
                              'file. Defaults to `formatter.py` in the working directory')
+    parser.add_argument('-H', '--host', metavar='HOST', type=str, default='localhost',
+                        help='Rabbitmq hostname to connect to. Defaults to `localhost`')
     parser.add_argument('-m', '--message', metavar='FILE', type=str, default='message.json',
                         help='Filename that holds message template to launch. Defaults to '
                              '`message.json`')
-    parser.add_argument('-o', '--host', metavar='HOST', type=str, default='localhost',
-                        help='Rabbitmq hostname to connect to. Defaults to `localhost`')
-    parser.add_argument('-p', '--port', metavar='PORT', type=str, default='5672',
-                        help='Rabbitmq port to connect to. Defaults to `5672`')
-    parser.add_argument('-P', '--password', metavar='PASSWORD', type=str, default='guest',
+    parser.add_argument('-p', '--password', metavar='PASSWORD', type=str, default='guest',
                         help='Rabbitmq password to connect with. Defaults to `guest`')
+    parser.add_argument('-P', '--port', metavar='PORT', type=str, default='5672',
+                        help='Rabbitmq port to connect to. Defaults to `5672`')
     parser.add_argument('-r', '--routing_key', metavar='KEY', type=str,
                         help='Routing key to mark message with')
     parser.add_argument('-u', '--username', metavar='USERNAME', type=str, default='guest',

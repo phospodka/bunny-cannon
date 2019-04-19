@@ -16,8 +16,11 @@ Tested against python 3.4+
 ## Usage
 
 ```
-usage: launch.py [-h] [-e EXCHANGE] [-f FILE] [-m FILE] [-r KEY] [-u URI]
+usage: launch.py [-h] [-d FILE] [-e EXCHANGE] [-f FILE] [-H HOST] [-m FILE]
+                 [-p PASSWORD] [-P PORT] [-r KEY] [-u USERNAME]
                  bunnos
+
+Bunny cannon is a python utility to bulk send messages a rabbitmq exchange.
 
 positional arguments:
   bunnos                Number of messages to launch per thread
@@ -34,14 +37,14 @@ optional arguments:
                         method that defines how to format, replace, etc
                         defails of the message input file. Defaults to
                         `formatter.py` in the working directory
+  -H HOST, --host HOST  Rabbitmq hostname to connect to. Defaults to
+                        `localhost`
   -m FILE, --message FILE
                         Filename that holds message template to launch.
                         Defaults to `message.json`
-  -o HOST, --host HOST  Rabbitmq hostname to connect to. Defaults to
-                        `localhost`
-  -p PORT, --port PORT  Rabbitmq port to connect to. Defaults to `5672`
-  -P PASSWORD, --password PASSWORD
+  -p PASSWORD, --password PASSWORD
                         Rabbitmq password to connect with. Defaults to `guest`
+  -P PORT, --port PORT  Rabbitmq port to connect to. Defaults to `5672`
   -r KEY, --routing_key KEY
                         Routing key to mark message with
   -u USERNAME, --username USERNAME
@@ -51,9 +54,9 @@ optional arguments:
 
 ## License
 
-See LICENSE file. Apache License 2.0
+See [[LICENSE]] file. Apache License 2.0
 
-## Plan
+## Todo
 
 Items to do
 * add threads for higher throughput
@@ -62,3 +65,4 @@ Items to do
 * * better readme for message and formatter after that
 * replace deprecated imports
 * add properties file for configuration instead of all arguments
+* add speed throttling
