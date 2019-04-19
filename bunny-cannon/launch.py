@@ -3,19 +3,43 @@ import argparse
 import imp
 import json
 import pika
+import threading
 from tqdm import tqdm
 
 
-def launch(args):
+def prime(args):
     """
-    Main method. Creates the connection to rabbitmq and sends the requested number of messages
-    to the server. The message is passed as input as well as a formatter that can add uniqueness
-    per message.
+    Entry point for launching. Primes the cannon by loading file contents up front as they are
+    static. Initiates the number of threads to launch and starts them all.
     :param args: container object for the arguments
+    """
+    message = load_message(args.message)
+    headers = load_headers(args.headers)
+
+    # replace with importlib for use with 3.5+?
+    formatter = imp.load_source('formatter', args.formatter)
+
+    for i in range(args.threads):
+        cannon = threading.Thread(name='cannon-' + str(i),
+                                  target=launch,
+                                  args=(args, message, headers, formatter))
+
+        # start up the thread
+        cannon.start()
+
+
+def launch(args, message, headers, formatter):
+    """
+    Creates the connection to rabbitmq and sends the requested number of messages to the server.
+    The message is passed as input as well as a formatter that can add uniqueness per message.
+    :param args: container object for the arguments
+    :param message: message to send to rabbitmq
+    :param headers: headers to attach to message
+    :param formatter: formatter with `format(m)` function to apply to message before sending
     """
     credentials = pika.PlainCredentials(args.username, args.password)
     props = pika.BasicProperties(content_type='application/json',
-                                 headers=load_headers(args.headers),
+                                 headers=headers,
                                  delivery_mode=2)
     connection = pika.BlockingConnection(pika.ConnectionParameters(
             host=args.host,
@@ -23,11 +47,7 @@ def launch(args):
             credentials=credentials))
     channel = connection.channel()
 
-    message = load_message(args.message)
-
-    # replace with importlib for use with 3.5+?
-    formatter = imp.load_source('formatter', args.formatter)
-
+    # tqdm the range for pretty metrics
     for i in tqdm(range(args.bunnos)):
         channel.basic_publish(exchange=args.exchange,
                               routing_key=args.routing_key,
@@ -86,7 +106,7 @@ if __name__ == '__main__':
                         help='Routing key to mark message with')
     parser.add_argument('-u', '--username', metavar='USERNAME', type=str, default='guest',
                         help='Rabbitmq usernamee to connect with. Defaults to `guest`')
-    #parser.add_argument('-t', '--threads', metavar='NUM', type=int,
-    #                    help='Number of threads to launch messages with')
+    parser.add_argument('-t', '--threads', metavar='NUM', type=int, default=1,
+                        help='Number of threads to launch messages with')
 
-    launch(parser.parse_args())
+    prime(parser.parse_args())

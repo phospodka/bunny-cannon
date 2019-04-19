@@ -17,7 +17,7 @@ Tested against python 3.4+
 
 ```
 usage: launch.py [-h] [-d FILE] [-e EXCHANGE] [-f FILE] [-H HOST] [-m FILE]
-                 [-p PASSWORD] [-P PORT] [-r KEY] [-u USERNAME]
+                 [-p PASSWORD] [-P PORT] [-r KEY] [-u USERNAME] [-t NUM]
                  bunnos
 
 Bunny cannon is a python utility to bulk send messages a rabbitmq exchange.
@@ -50,6 +50,8 @@ optional arguments:
   -u USERNAME, --username USERNAME
                         Rabbitmq usernamee to connect with. Defaults to
                         `guest`
+  -t NUM, --threads NUM
+                        Number of threads to launch messages with
 ```
 
 ## License
@@ -59,10 +61,9 @@ See [[LICENSE]] file. Apache License 2.0
 ## Todo
 
 Items to do
-* add threads for higher throughput
 * tests
 * make installable
 * * better readme for message and formatter after that
 * replace deprecated imports
 * add properties file for configuration instead of all arguments
-* add speed throttling
+* add speed throttling / flow control for consistent rate of messaging
