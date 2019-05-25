@@ -22,13 +22,13 @@ def prime(args):
     for i in range(args.threads):
         cannon = threading.Thread(name='cannon-' + str(i),
                                   target=launch,
-                                  args=(args, message, headers, formatter))
+                                  args=(args, message, headers, formatter, i))
 
         # start up the thread
         cannon.start()
 
 
-def launch(args, message, headers, formatter):
+def launch(args, message, headers, formatter, position=0):
     """
     Creates the connection to rabbitmq and sends the requested number of messages to the server.
     The message is passed as input as well as a formatter that can add uniqueness per message.
@@ -36,6 +36,7 @@ def launch(args, message, headers, formatter):
     :param message: message to send to rabbitmq
     :param headers: headers to attach to message
     :param formatter: formatter with `format(m)` function to apply to message before sending
+    :param position: optional position for tqdm; used to handle multiple tqdm bars
     """
     credentials = pika.PlainCredentials(args.username, args.password)
     props = pika.BasicProperties(content_type='application/json',
@@ -48,7 +49,7 @@ def launch(args, message, headers, formatter):
     channel = connection.channel()
 
     # tqdm the range for pretty metrics
-    for i in tqdm(range(args.bunnos)):
+    for i in tqdm(range(args.bunnos), position=position):
         channel.basic_publish(exchange=args.exchange,
                               routing_key=args.routing_key,
                               properties=props,
